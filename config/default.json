@@ -1,0 +1,6 @@
+{
+	"jwtPrivateKey": "napeia_privateKey",
+	"db": "mongod://localhost/napeia",
+	"port": "5500",
+	"requiresAuth": false
+}

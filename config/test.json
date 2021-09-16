@@ -1,0 +1,4 @@
+{
+	"jwtPrivateKey": "test123",
+	"db": "mongodb://localhost/napeia_tests"
+}
