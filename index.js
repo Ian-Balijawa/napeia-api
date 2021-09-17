@@ -13,6 +13,6 @@ require('./startup/validation');
 
 const PORT = process.env.PORT || config.get('port');
 const server = app.listen(PORT, function () {
-	winston.info(`Server up and running on port: ${PORT}`);
+	winston.info(`Server up and running on port: ${PORT}...`);
 });
 module.exports = server;
