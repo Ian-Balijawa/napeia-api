@@ -2,13 +2,14 @@ const winston = require('winston');
 const mongoose = require('mongoose');
 const config = require('config');
 
-module.exports = () => {
+module.exports = async () => {
 	const connectionString = config.get('db');
-	mongoose.connect(connectionString, {
+	await mongoose.connect(connectionString, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useFindAndModify: false,
 	});
+
 	const db = mongoose.connection;
 	db.on('error', () => winston.error('Database connection Error!'));
 	db.once('open', () =>
