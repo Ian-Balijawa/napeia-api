@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const config = require('config');
 
-const schooolSchema = new mongoose.Schema({
+const schoolSchema = new mongoose.Schema({
 	institutionName: {
 		type: String,
 		trim: true,
@@ -30,11 +32,12 @@ const schooolSchema = new mongoose.Schema({
 		type: String,
 		required,
 		trim: true,
+		unique,
 		minlength: 5,
 		maxlength: 255,
 	},
 	designation: {
-		type: string,
+		type: String,
 		required,
 		lowercase: true,
 		trim: true,
@@ -101,6 +104,7 @@ const schooolSchema = new mongoose.Schema({
 		type: String,
 		trim: true,
 		required,
+		unique,
 		// TODO: CHECK THE ACTUAL NUMBER OF CHARACTERS IN A NIN
 		minlength: 15, // FOR THE START
 		maxlength: 15,
@@ -144,7 +148,7 @@ const schooolSchema = new mongoose.Schema({
 					else
 						reject(
 							new Error(
-								`Unacceptable school Category parameter ${data}`
+								`Unacceptable parameter ${data} as school category`
 							)
 						);
 				});
@@ -170,7 +174,7 @@ const schooolSchema = new mongoose.Schema({
 					else
 						reject(
 							new Error(
-								`Unacceptable school Category parameter ${data}`
+								`Unacceptable parameter ${data} as school category`
 							)
 						);
 				});
@@ -222,6 +226,7 @@ const schooolSchema = new mongoose.Schema({
 		minlength: 5,
 		maxlength: 255,
 		trim: true,
+		unique: true,
 	},
 	website: {
 		type: String,
@@ -252,7 +257,24 @@ const schooolSchema = new mongoose.Schema({
 	},
 });
 
-const School = mongoose.model('School', schooolSchema);
+schoolSchema.methods.generateAuthToken = () => {
+	const token = jwt.sign(
+		{
+			_id: this._id,
+			institutionName: this.institutionName,
+			registrationNumber: this.registrationNumber,
+			email: this.email,
+			contactPerson: this.contactPerson,
+			designation: this.designation,
+			telephoneContact: this.telephoneContact,
+			memberShipCategory: this.memberShipCategory,
+		},
+		config.get('jwtPrivateKey')
+	);
+
+	return token;
+};
+const School = mongoose.model('School', schoolSchema);
 
 const validateSchool = school => {
 	const schema = Joi.object({
@@ -285,6 +307,7 @@ const validateSchool = school => {
 		teachingStaffFemale: Joi.string().required().min(0).max(500),
 		teachingStaffMale: Joi.string().required().min(0).max(500),
 	});
+
 	return schema.validate(school);
 };
 
