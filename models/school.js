@@ -253,3 +253,40 @@ const schooolSchema = new mongoose.Schema({
 });
 
 const School = mongoose.model('School', schooolSchema);
+
+const validateSchool = school => {
+	const schema = Joi.object({
+		institutionName: Joi.string().required().min(3).max(255),
+		memberShipCategory: Joi.string().required().min(3).max(255),
+		contactPerson: Joi.string().required().min(3).max(255),
+		registrationNumber: Joi.string().required().min(3).max(255),
+		designation: Joi.string().required().min(3).max(255),
+		telephoneContact: Joi.string().required().min(10).max(13),
+		email: Joi.string().required().min(5).max(255).email(),
+		ownerShipType: Joi.string().required(),
+		otherOwnershipType: Joi.string().max(20).min(1),
+		ownerName: Joi.string().required().max(5).max(255),
+		ownerPersonalContact: Joi.string().required().min(10).max(13),
+		ownerNIN: Joi.string().required().min(15).max(15),
+		licensed: Joi.boolean(),
+		licenseNumber: Joi.string().required().min(1).max(255),
+		registered: Joi.boolean().required(),
+		regNumber: Joi.string().required().min(1).max(255),
+		schoolCategory: Joi.string().required().min(3).max(255),
+		dayBoarding: Joi.string().required().min(),
+		village: Joi.string().required().min(3).max(255),
+		parish: Joi.string().required().min(3).max(255),
+		subCounty: Joi.string().required().min(3).max(255),
+		district: Joi.string().required().min(3).max(255),
+		contactAddress: Joi.string().required().min(10).max(13),
+		emailAddress: Joi.string().required().min(5).max(255).email(),
+		website: Joi.string().required().min(2).max(255),
+		enrollment: Joi.string().required().min(1).max(2048),
+		teachingStaffFemale: Joi.string().required().min(0).max(500),
+		teachingStaffMale: Joi.string().required().min(0).max(500),
+	});
+	return schema.validate(school);
+};
+
+exports.School = School;
+exports.ValidateSchool = validateSchool;
