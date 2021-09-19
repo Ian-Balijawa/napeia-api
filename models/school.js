@@ -257,23 +257,6 @@ const schoolSchema = new mongoose.Schema({
 	},
 });
 
-schoolSchema.methods.generateAuthToken = () => {
-	const token = jwt.sign(
-		{
-			_id: this._id,
-			institutionName: this.institutionName,
-			registrationNumber: this.registrationNumber,
-			email: this.email,
-			contactPerson: this.contactPerson,
-			designation: this.designation,
-			telephoneContact: this.telephoneContact,
-			memberShipCategory: this.memberShipCategory,
-		},
-		config.get('jwtPrivateKey')
-	);
-
-	return token;
-};
 const School = mongoose.model('School', schoolSchema);
 
 const validateSchool = school => {
