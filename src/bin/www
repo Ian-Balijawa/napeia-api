@@ -7,17 +7,8 @@ const app = require('../app');
 function normalizePort(val) {
   const port = parseInt(val, 10);
 
-  if (Number.isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
+  //            named port          port number
+  return Number.isNaN(port) ? val : port >= 0 ? port : false;
 }
 
 // Get port from environment and store in Express.
