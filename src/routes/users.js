@@ -1,6 +1,6 @@
 const validateObjectId = require('../middleware/validateObjectId');
 const auth = require('../middleware/auth');
-const async = require('../middleware/async');
+const async = require('../middleware/asyncHandler');
 const bcrypt = require('bcrypt');
 const admin = require('../middleware/admin');
 const _ = require('lodash');
