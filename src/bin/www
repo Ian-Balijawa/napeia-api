@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 const http = require('http');
+const config = require('config');
 const winston = require('winston');
-const app = require('../app');
+const app = require('../index');
 
 // Normalize a port into a number, string, or false.
 function normalizePort(val) {
@@ -13,7 +14,7 @@ function normalizePort(val) {
 }
 
 // Get port from environment and store in Express.
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || config.get('port'));
 app.set('port', port);
 
 // Create the HTTP server
@@ -31,11 +32,9 @@ function onError(error) {
     case 'EACCES':
       winston.error(`${bind} requires elevated privileges`); // eslint-disable-line no-console
       process.exit(1);
-      break;
     case 'EADDRINUSE':
       winston.error(`${bind} is already in use`); // eslint-disable-line no-console
       process.exit(1);
-      break;
     default:
       throw error;
   }
@@ -44,6 +43,7 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+
   winston.info(`Server Listening on port ${bind}`); // eslint-disable-line no-console
 }
 

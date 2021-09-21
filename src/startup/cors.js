@@ -1,3 +1,3 @@
-module.exports = () => {
-	app.use(require('cors')());
+module.exports = (app) => {
+  app.use(require('cors')());
 };

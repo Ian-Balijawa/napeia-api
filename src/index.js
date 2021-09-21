@@ -1,24 +1,31 @@
 const express = require('express');
-const config = require('config');
-const winston = require('winston');
-const users = require('./routes/users');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const createError = require('http-errors');
+
 const app = express();
 
+const errorHandler = require('./middleware/errorHandler');
 // startup configurtions
-require('./startup/logging');
-require('./startup/cors');
-require('./startup/db');
-require('./startup/validation');
-require('./startup/routes');
-require('./startup/validation');
-require('./startup/routes');
+require('./startup/db')();
+require('./startup/logging')();
+require('./startup/cors')(app);
+require('./startup/routes')(app);
+require('./startup/validation')();
+require('./startup/config')();
 
+app.use(express.json());
+app.use(helmet());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(morgan('dev'));
 
-const PORT = process.env.PORT || config.get('port');
-const server = app.listen(PORT, function () {
-	winston.info(`Server up and running on port: ${PORT}...`);
+app.use((req, res, next) => {
+  next(createError.NotFound());
 });
 
-module.exports = server;
+// pass any unhandled errors to the error handler
+app.use(errorHandler);
+
+module.exports = app;
