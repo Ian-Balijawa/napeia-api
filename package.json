@@ -46,5 +46,13 @@
     "nodemon": "^2.0.12",
     "jest": "^27.2.0",
     "supertest": "^6.1.6"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.test.js"
+    ]
   }
 }
