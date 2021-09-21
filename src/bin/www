@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const http = require('http');
+const winston = require('winston');
 const app = require('../app');
 
 // Normalize a port into a number, string, or false.
@@ -28,11 +29,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requires elevated privileges`); // eslint-disable-line no-console
+      winston.error(`${bind} requires elevated privileges`); // eslint-disable-line no-console
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(`${bind} is already in use`); // eslint-disable-line no-console
+      winston.error(`${bind} is already in use`); // eslint-disable-line no-console
       process.exit(1);
       break;
     default:
@@ -43,7 +44,7 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  console.log(`Listening on ${bind}`); // eslint-disable-line no-console
+  winston.info(`Server Listening on port ${bind}`); // eslint-disable-line no-console
 }
 
 // Listen on provided port, on all network interfaces.
