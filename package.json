@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "NODE_ENV=production node ./src/bin/www",
+    "start": "node ./src/bin/www",
     "dev": "nodemon ./src/bin/www",
     "test": "jest",
     "test:watch": "jest --watchAll",
